@@ -1,8 +1,6 @@
 <?php
-declare(strict_types=1);
-
 use Bitrix\Main\Localization\Loc;
-
+$arResult['USER'] = $_SESSION['user_current'];
 ?>
 
 <div class="modal fade" id="fl_profile" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
@@ -16,6 +14,7 @@ use Bitrix\Main\Localization\Loc;
                 </button>
             </div>
             <div class="modal-body">
+<?// dump($arResult);?>
                 <form id="form_profile_fl" action="/tools/change_user_fl.php?change=<?=$USER->GetID()?>" method="post" name="form_profile_fl"
                       class="form-horizontal">
                     <?=bitrix_sessid_post()?>
@@ -42,12 +41,14 @@ use Bitrix\Main\Localization\Loc;
                     </div>
                     <div class="form-group">
                         <label class="control-label"><?= Loc::getMessage("USER_PHONE") ?></label>
-                        <input type="text" name="PERSONAL_PHONE" maxlength="50" value="<?=$arResult['PERSONAL_PHONE']?>"
+                        <input type="text" name="PERSONAL_PHONE" maxlength="50"
+                               value="<?=$arResult['USER']['phone']?>"
                                class="form-control">
                     </div>
                     <div class="form-group">
                         <label class="control-label"><?= Loc::getMessage("USER_STREET") ?></label>
-                        <input type="text" name="PERSONAL_STREET" maxlength="50" value="<?=$arResult['PERSONAL_STREET']?>"
+                        <input type="text" name="PERSONAL_STREET" maxlength="50"
+                               value="<?=$arResult['USER']['adress']?>"
                                class="form-control">
                     </div>
                     <div class="form-group">
@@ -170,6 +171,7 @@ use Bitrix\Main\Localization\Loc;
                                             id="pay_form_radio_SIMPLE_QUESTION_971">
                                         <option value="102" selected>Отправителем</option>
                                         <option value="121">Получателем</option>
+                                        <option value="creator">Заказчик</option>
                                     </select>
                                 </div>
                                 <div class="form-group form-group-sm">
@@ -251,20 +253,20 @@ use Bitrix\Main\Localization\Loc;
                                     <input type="text" class="form-control masktime" name="form_text_54">
                                 </div>
                                 <div class="form-group form-group-sm">
-                                    <label for="" class="control-label"><span id="chLabel1"><?=$chLabel1;?></span><span class="form-required">*</span></label>
+                                    <label for="" class="control-label">Город получателя<span class="form-required">*</span></label>
                                     <input id="city_from_hidden5" type="hidden"  name="form_text_hidden57">
                                     <input id="city_from5" type="text" class="form-control city_autocomplete" required name="form_text_57">
                                 </div>
                                 <div class="form-group form-group-sm">
-                                    <label for="" class="control-label"><span id="chLabel3"><?=$chLabel3;?></span><span class="form-required">*</span></label>
+                                    <label for="" class="control-label">Адрес получателя<span class="form-required">*</span></label>
                                     <textarea class="form-control" required name="form_textarea_103"></textarea>
                                 </div>
                                 <div class="form-group form-group-sm">
-                                    <label for="" class="control-label"><span id="chLabel2"><?=$chLabel2;?></span><span class="form-required">*</span></label>
+                                    <label for="" class="control-label">ФИО получателя<span class="form-required">*</span></label>
                                     <input type="text" class="form-control" required name="form_text_62">
                                 </div>
                                 <div class="form-group form-group-sm">
-                                    <label for="" class="control-label"><span id="chLabel4"><?=$chLabel4;?></span><span class="form-required">*</span></label>
+                                    <label for="" class="control-label">Номер телефона получателя<span class="form-required">*</span></label>
                                     <input type="text" class="form-control " required name="form_text_149">
                                 </div>
                                 <div class="form-group form-group-sm">
@@ -355,6 +357,67 @@ use Bitrix\Main\Localization\Loc;
 
                                 <div class="form-group form-group-sm">
                                     <label for="" class="control-label">Адрес отправителя<span class="form-required">*</span></label>
+                                    <textarea class="form-control" required name="ADRESS"></textarea>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 d-flex flex-row justify-content-end">
+                            <button type="submit" class="btn btn-primary">
+                                  <span class="icon text-white-50">
+                                   <i class="fas fa-save"></i>
+                                    </span>&nbsp;
+                                Сохранить
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<div id="add_modal_recipient" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog  modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >Новый Получатель</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="add_modal_recipient_form"
+                      action="/tools/change_user_fl.php?newsender=<?=$USER->GetID()?>&recipient_add=Y" method="post">
+                    <?=bitrix_sessid_post()?>
+                    <div class="info"></div>
+                    <div class="alert alert-danger display-error" style="display: none"></div>
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group form-group-sm">
+                                    <label for="" class="control-label">ФИО получателя<span
+                                                class="form-required">*</span></label>
+                                    <input type="text" class="form-control" name="NAME" required value="">
+                                </div>
+                                <div class="form-group form-group-sm">
+                                    <label for="" class="control-label">Номер телефона получателя<span
+                                                class="form-required">*</span></label>
+                                    <input type="text" class="form-control" name="PHONE" required
+                                           value="">
+                                </div>
+
+                                <div class="form-group form-group-sm">
+                                    <label for="" class="control-label">Адрес получателя<span class="form-required">*</span></label>
                                     <textarea class="form-control" required name="ADRESS"></textarea>
                                 </div>
 

@@ -93,9 +93,7 @@ $(document).ready(function() {
                           <th>Время</th>
                           <th>Статус</th>
                           <th>Сообщение</th>
-                          
-                        </tr>
-                        `;
+                         </tr>`;
                         $.each($collect, function (ind, val) {
                             $messtrack += "<tr>";
                             $.each(val, function (i,v) {
@@ -217,6 +215,53 @@ $(document).ready(function() {
             }
         });
     });
+
+    $('#add_modal_recipient_form').on('submit', function(e){
+        e.preventDefault();
+        let $that = $(this),
+            fData = $that.serializeArray();
+        console.log(fData);
+        $.ajax({
+            url: $that.attr('action'),
+            type: $that.attr('method'),
+            data: {form_data: fData},
+            dataType: 'json',
+            success: function(json){
+                if(json.change == 1){
+                    console.log(json.mess);
+                    $('#add_modal_recipient').modal('hide');
+                    let mess = json.mess;
+                    if(mess){
+                        let messprof =  $('#mess-profile');
+                        let message = `<div class="alert alert-success" role="alert">
+                             ${mess}
+                    </div>`;
+                        messprof.append(message);
+                        setTimeout(function(){
+                            // $('#mess-profile').empty();
+                            $('#mess-profile').hide('slow', function(){
+                                $(this).empty();
+                            });
+                            window.location.href = '/customers-lk/?recipient_add=Y';
+                        }, 2000);
+                        messprof.attr('style', 'display:block');
+                    }
+                }else{
+                    $('#add_modal_recipient').modal('hide');
+                    let messerr = json.messerr;
+                    if(messerr){
+                        let messprof =  $('#mess-profile');
+                        let message = `<div class="alert alert-danger" role="alert">
+                             ${messerr}
+                    </div>`;
+                        messprof.attr('style', 'display:block');
+                        messprof.append(message);
+                    }
+                }
+            }
+        });
+    });
+
     $('#dataTable_form').on('submit', function (e) {
         e.preventDefault();
         let $that = $(this),
@@ -228,7 +273,6 @@ $(document).ready(function() {
             data: {form_data: fData},
             dataType: 'json',
             success: function(json){
-
             }
         });
 

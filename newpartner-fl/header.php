@@ -20,6 +20,39 @@ $params_user = CUser::GetByID($id_user);
 $arResult['PERSONAL_PHONE'] = $params_user->arResult[0]['PERSONAL_PHONE'];
 
 ?>
+<script>
+    function delItem(id, sess_id){
+        let url = '/tools/change_user_fl.php?delete=Y';
+        let data = {
+            id: id,
+            sess_id: sess_id
+        };
+        $.post(url, data, function(res){
+            //let data = JSON.parse(res);
+            //console.log(res);
+            location.reload();
+        });
+    }
+    function editItem(id_f, id_s) {
+
+        $('#'+id_f).on('submit', function(e){
+            e.preventDefault();
+            let $that = $(this),
+                fData = $that.serializeArray();
+            $.ajax({
+                url: $that.attr('action'),
+                type: $that.attr('method'),
+                data: {form_data: fData},
+                dataType: 'json',
+                success: function(json){
+                    location.reload();
+                }
+            });
+        });
+        $('#'+id_s).click();
+    }
+
+</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
