@@ -1,6 +1,6 @@
 <?php
 use Bitrix\Main\Localization\Loc;
-$arResult['USER'] = $_SESSION['user_current'];
+
 ?>
 
 <div class="modal fade" id="fl_profile" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
@@ -14,7 +14,7 @@ $arResult['USER'] = $_SESSION['user_current'];
                 </button>
             </div>
             <div class="modal-body">
-<?// dump($arResult);?>
+                <?php // dump($arResult);?>
                 <form id="form_profile_fl" action="/tools/change_user_fl.php?change=<?=$USER->GetID()?>" method="post" name="form_profile_fl"
                       class="form-horizontal">
                     <?=bitrix_sessid_post()?>
@@ -97,7 +97,8 @@ $arResult['USER'] = $_SESSION['user_current'];
     </div>
 </div>
 
-<div class="modal fade" id="modal_calculate_cost_new" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modal_calculate_cost_new">
+<div class="modal fade" id="modal_calculate_cost_new" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-labelledby="modal_calculate_cost_new">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -156,7 +157,7 @@ $arResult['USER'] = $_SESSION['user_current'];
             </div>
 
             <div class="modal-body">
-
+                <?php //dump($arResult['DEFAULT_SENDER']); ?>
                 <form id="modal_order_service_form_pay" action="" method="post">
                     <div class="info"></div>
                     <div class="alert alert-danger display-error" style="display: none"></div>
@@ -166,35 +167,51 @@ $arResult['USER'] = $_SESSION['user_current'];
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group form-group-sm">
-                                    <label for="" class="control-label">Вы будете</label>
-                                    <select class="form-control" name="form_radio_SIMPLE_QUESTION_971"
-                                            id="pay_form_radio_SIMPLE_QUESTION_971">
-                                        <option value="102" selected>Отправителем</option>
-                                        <option value="121">Получателем</option>
-                                        <option value="creator">Заказчик</option>
-                                    </select>
+                                <label for="" class="control-label">Вы будете</label>
+                                <select  class="form-control" name="form_radio_SIMPLE_QUESTION_971"
+                                         id="pay_form_radio_SIMPLE_QUESTION_971"
+                                          onchange="getval(this, <?="'$fullname', '$phone', '$adress',
+                                          '$name_sender', '$phone_sender', '$adress_sender',
+                                          '$name_recipient', '$phone_recipient', '$adress_recipient'"?>)">
+                                    <option value="102" selected>Отправителем</option>
+                                    <option value="121">Получателем</option>
+                                    <option value="creator">Заказчик</option>
+                                </select>
                                 </div>
-                                <div class="form-group form-group-sm">
+                                <div  class="form-group form-group-sm">
                                     <label for="" class="control-label">Ваш E-mail<span
                                                 class="form-required">*</span></label>
-                                    <input type="text" class="form-control" name="form_email_52" required
+                                    <input disabled type="text" class="form-control" name="form_email_52" required
                                            value="<?=($_COOKIE["np_form_email_52"])?iconv('utf-8',
-                                               'windows-1251',$_COOKIE["np_form_email_52"]):$_SESSION['form_mail'];?>">
+                                     'windows-1251',$_COOKIE["np_form_email_52"]):$_SESSION['form_mail'];?>">
                                 </div>
+                                <?php if(!empty($arResult['SENDERS'])):?>
+                                <div id="sender_name_select_wrap" style="display:none" class="form-group form-group-sm">
+                                    <label for="sender_name_select" class="control-label">Выбрать отправителя из адресной книги</label>
+                                    <select class="form-control" disabled id="sender_name_select"
+                                    name="sender_name_select"  onchange="getsenderval(this)">
+                                       <?php foreach($arResult['SENDERS'] as $key=>$value):?>
+                                           <option <?=($value['NAME']===trim($name_sender))?'selected':''?>
+                                                   value="<?=$value['ID']?>"><?=$value['NAME']?></option>
+                                        <?php endforeach;?>
+                                    </select>
+                                </div>
+                                <?php endif;?>
                                 <div class="form-group form-group-sm">
                                     <label for="" class="control-label">ФИО отправителя<span
                                                 class="form-required">*</span></label>
-                                    <input type="text" class="form-control" name="form_text_50" required
-                                           value="<?=($_COOKIE["np_form_text_50"])?iconv('utf-8','windows-1251',
-                                               $_COOKIE["np_form_text_50"]):'';?>">
+                                    <input disabled type="text" class="form-control" name="form_text_50" required
+                                value="<?=($_COOKIE["np_form_text_50"])?iconv('utf-8','windows-1251',
+                                           $_COOKIE["np_form_text_50"]):$name.' '.
+                                               $lastname;?>">
                                 </div>
 
                                 <div class="form-group form-group-sm">
                                     <label for="" class="control-label">Номер телефона отправителя<span
                                                 class="form-required">*</span></label>
-                                    <input type="text" class="form-control" name="form_text_51" required
-                                           value="<?=($_COOKIE["np_form_text_51"])?iconv('utf-8','windows-1251',
-                                               $_COOKIE["np_form_text_51"]):'';?>">
+                                    <input disabled type="text" class="form-control" name="form_text_51" required
+                                 value="<?=($_COOKIE["np_form_text_51"])?iconv('utf-8','windows-1251',
+                                               $_COOKIE["np_form_text_51"]):$phone;?>">
                                 </div>
 
                                 <div class="form-group form-group-sm">
@@ -208,8 +225,8 @@ $arResult['USER'] = $_SESSION['user_current'];
                                 </div>
                                 <div class="form-group form-group-sm">
                                     <label for="" class="control-label">Адрес отправителя<span class="form-required">*</span></label>
-                                    <textarea class="form-control" required name="form_textarea_56"><?=($_COOKIE["np_form_textarea_56"])?iconv('utf-8','windows-1251',
-                                            $_COOKIE["np_form_textarea_56"]):'';?>
+                                    <textarea disabled class="form-control" required name="form_textarea_56"><?=($_COOKIE["np_form_textarea_56"])?iconv('utf-8','windows-1251',
+                                            $_COOKIE["np_form_textarea_56"]):$adress;?>
                                     </textarea>
                                 </div>
                                 <div class="form-group form-group-sm">
@@ -227,25 +244,26 @@ $arResult['USER'] = $_SESSION['user_current'];
                                     <label for="" class="control-label">Дата<span class="form-required">*</span></label>
                                     <div class="input-group">
                             			<span class="input-group-addon" id="basic-addon-form_text_53">
-				<?php
-                $APPLICATION->IncludeComponent(
-                    "bitrix:main.calendar",
-                    ".default",
-                    array(
-                        "SHOW_INPUT" => "N",
-                        "FORM_NAME" => "",
-                        "INPUT_NAME" => "form_text_53",
-                        "INPUT_NAME_FINISH" => "",
-                        "INPUT_VALUE" => "",
-                        "INPUT_VALUE_FINISH" => false,
-                        "SHOW_TIME" => "N",
-                        "HIDE_TIMEBAR" => "Y",
-                    ),
-                    false
-                );
-                ?>
-			</span>
-                                        <input type="text" class="form-control maskdate" required name="form_text_53" placeholder="ДД.ММ.ГГГГ" ria-describedby="basic-addon-form_text_53">
+                            <?php
+                            $APPLICATION->IncludeComponent(
+                                "bitrix:main.calendar",
+                                ".default",
+                                array(
+                                    "SHOW_INPUT" => "N",
+                                    "FORM_NAME" => "",
+                                    "INPUT_NAME" => "form_text_53",
+                                    "INPUT_NAME_FINISH" => "",
+                                    "INPUT_VALUE" => "",
+                                    "INPUT_VALUE_FINISH" => false,
+                                    "SHOW_TIME" => "N",
+                                    "HIDE_TIMEBAR" => "Y",
+                                ),
+                                false
+                            );
+                            ?>
+                        </span>
+                                 <input type="text" class="form-control maskdate" required name="form_text_53"
+                                        placeholder="ДД.ММ.ГГГГ" ria-describedby="basic-addon-form_text_53">
                                     </div>
                                 </div>
                                 <div class="form-group form-group-sm">
@@ -257,20 +275,40 @@ $arResult['USER'] = $_SESSION['user_current'];
                                     <input id="city_from_hidden5" type="hidden"  name="form_text_hidden57">
                                     <input id="city_from5" type="text" class="form-control city_autocomplete" required name="form_text_57">
                                 </div>
-                                <div class="form-group form-group-sm">
-                                    <label for="" class="control-label">Адрес получателя<span class="form-required">*</span></label>
-                                    <textarea class="form-control" required name="form_textarea_103"></textarea>
+                                <?php if($arResult['RECIPIENTS']):?>
+                                <div id="recipient_name_select_wrap" class="form-group form-group-sm">
+                                <label for="recipient_name_select" class="control-label">Выбрать получателя из адресной книги</label>
+                                <select class="form-control" id="recipient_name_select"
+                                        name="recipient_name_select" onchange="getrecipientval(this)">
+                                    <?php foreach($arResult['RECIPIENTS'] as $key=>$value):?>
+                                        <option <?=($value['NAME']===trim($name_recipient)?'selected':'')?>
+                                                value="<?=$value['ID']?>"><?=$value['NAME']?></option>
+                                    <?php endforeach;?>
+                                </select>
                                 </div>
+                                <?php endif;?>
                                 <div class="form-group form-group-sm">
                                     <label for="" class="control-label">ФИО получателя<span class="form-required">*</span></label>
-                                    <input type="text" class="form-control" required name="form_text_62">
+                                    <input type="text" class="form-control" required name="form_text_62"
+                                           value="<?=$name_recipient?>">
+
                                 </div>
                                 <div class="form-group form-group-sm">
-                                    <label for="" class="control-label">Номер телефона получателя<span class="form-required">*</span></label>
-                                    <input type="text" class="form-control " required name="form_text_149">
+                                    <label for="" class="control-label">Адрес получателя<span class="form-required">*</span></label>
+                                    <textarea class="form-control" required name="form_textarea_103"><?=$adress_recipient?>
+                                    </textarea>
+
+                                </div>
+
+                                <div class="form-group form-group-sm">
+                                    <label for="" class="control-label">Номер телефона получателя<span
+                                                class="form-required">*</span></label>
+                                    <input type="text" class="form-control " required name="form_text_149"
+                                           value="<?=$phone_recipient?>">
+
                                 </div>
                                 <div class="form-group form-group-sm">
-                                    <?
+                                    <?php
                                     $radio_59 = " selected";
                                     $radio_60 = "";
 

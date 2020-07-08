@@ -1,9 +1,29 @@
 <?php if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
 {
     die();
+}
+
+$arResult['USER'] = $_SESSION['user_current'];
+$arResult['DEFAULT_SENDER'] = $_SESSION['DEFAULT_SENDER'];
+$arResult['DEFAULT_RECIPIENT'] = $_SESSION['DEFAULT_RECIPIENT'];
+$arResult['SENDERS'] = $_SESSION['SENDERS'];
+$arResult['RECIPIENTS'] = $_SESSION['RECIPIENTS'];
+$name = $arResult['USER']['name'];
+$lastname = $arResult['USER']['lastName'];
+$phone =  $arResult['USER']['phone'];
+$adress =  $arResult['USER']['adress'];
+$fullname = $name.' '.$lastname;
+
+$name_sender = $arResult['DEFAULT_SENDER']['NAME'];
+$phone_sender =  $arResult['DEFAULT_SENDER']['PHONE'];
+$adress_sender =  $arResult['DEFAULT_SENDER']['ADRESS'];
+
+$name_recipient = $arResult['DEFAULT_RECIPIENT']['NAME'];
+$phone_recipient =  $arResult['DEFAULT_RECIPIENT']['PHONE'];
+$adress_recipient =  $arResult['DEFAULT_RECIPIENT']['ADRESS'];
 
 
-}?>
+?>
 <!-- /.container-fluid -->
 </div>
 </div>
@@ -11,7 +31,7 @@
 
 <!-- Footer -->
 <footer class="sticky-footer bg-white">
-    <?php //dump($arResult);?>
+
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
            <span>&copy; мнбши оюпрмеп 2020</span>
@@ -33,11 +53,12 @@
 
 <!-- Logout Modal-->
 <?php
-   require_once ('inc/modal.inc.php');
+   require_once (__DIR__.'/inc/modal.inc.php');
 ?>
 
 <!-- Bootstrap core JavaScript-->
 <!--<script src="/bitrix/templates/newpartner-fl/vendor/jquery/jquery.min.js"></script>-->
+
 <script src="/bitrix/templates/newpartner-2016/js/jquery-1.11.2.min.js"></script>
 <script src="/bitrix/templates/newpartner-fl/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/bitrix/templates/newpartner-2016/js/jquery-ui-new.js"></script>

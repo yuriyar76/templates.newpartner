@@ -20,39 +20,6 @@ $params_user = CUser::GetByID($id_user);
 $arResult['PERSONAL_PHONE'] = $params_user->arResult[0]['PERSONAL_PHONE'];
 
 ?>
-<script>
-    function delItem(id, sess_id){
-        let url = '/tools/change_user_fl.php?delete=Y';
-        let data = {
-            id: id,
-            sess_id: sess_id
-        };
-        $.post(url, data, function(res){
-            //let data = JSON.parse(res);
-            //console.log(res);
-            location.reload();
-        });
-    }
-    function editItem(id_f, id_s) {
-
-        $('#'+id_f).on('submit', function(e){
-            e.preventDefault();
-            let $that = $(this),
-                fData = $that.serializeArray();
-            $.ajax({
-                url: $that.attr('action'),
-                type: $that.attr('method'),
-                data: {form_data: fData},
-                dataType: 'json',
-                success: function(json){
-                    location.reload();
-                }
-            });
-        });
-        $('#'+id_s).click();
-    }
-
-</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,7 +38,111 @@ $arResult['PERSONAL_PHONE'] = $params_user->arResult[0]['PERSONAL_PHONE'];
     <link href="/bitrix/templates/newpartner-2016/css/jquery-ui.css" rel="stylesheet">
     <link href="/bitrix/templates/newpartner-fl/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="/bitrix/templates/newpartner-fl/css/styles.css" rel="stylesheet">
+    <script>
+        function delItem(id, sess_id){
+            let url = '/tools/change_user_fl.php?delete=Y';
+            let data = {
+                id: id,
+                sess_id: sess_id
+            };
+            $.post(url, data, function(res){
+                //let data = JSON.parse(res);
+                //console.log(res);
+                location.reload();
+            });
+        }
+        function editItem(id_f, id_s) {
+            $('#'+id_f).on('submit', function(e){
+                e.preventDefault();
+                let $that = $(this),
+                    fData = $that.serializeArray();
+                $.ajax({
+                    url: $that.attr('action'),
+                    type: $that.attr('method'),
+                    data: {form_data: fData},
+                    dataType: 'json',
+                    success: function(json){
+                        location.reload();
+                    }
+                });
+            });
+            $('#'+id_s).click();
+        }
 
+        function getval(sel, name, phone, adress, name_sender, phone_sender,
+                adress_sender, name_recipient, phone_recipient, adress_recipient) {
+            let select = sel.value;
+            let name_input = $('#modal_order_service_form_pay input[name=form_text_50]');
+            let phone_input = $('#modal_order_service_form_pay input[name=form_text_51]');
+            let adress_input = $('#modal_order_service_form_pay textarea[name=form_textarea_56]');
+
+
+            let name_input_2 = $('#modal_order_service_form_pay input[name=form_text_62]');
+            let phone_input_2 = $('#modal_order_service_form_pay input[name=form_text_149]');
+            let adress_input_2 = $('#modal_order_service_form_pay textarea[name=form_textarea_103]');
+
+            let sel_name_wrap_sender = $('#sender_name_select_wrap');
+            let input_name_sender = $('#sender_name_select');
+            let sel_name_wrap_recipient = $('#recipient_name_select_wrap');
+            let input_name_recipient = $('#recipient_name_select');
+
+
+
+            if(select == '102'){ /* Отправителем */
+
+                sel_name_wrap_sender.attr('style', 'display:none');
+                input_name_sender.attr('disabled','disabled');
+                sel_name_wrap_recipient.attr('style', 'display:block');
+                input_name_recipient.removeAttr('disabled');
+                name_input.val(name);
+                phone_input.val(phone);
+                adress_input.val(adress);
+                name_input.attr('disabled','disabled');
+                phone_input.attr('disabled','disabled');
+                adress_input.attr('disabled','disabled');
+
+                name_input_2.val(name_recipient);
+                phone_input_2.val(phone_recipient);
+                adress_input_2.val(adress_recipient);
+                name_input_2.removeAttr('disabled');
+                phone_input_2.removeAttr('disabled');
+                adress_input_2.removeAttr('disabled');
+
+            }
+            if(select == '121'){  /* Получателем */
+                input_name_recipient.attr('disabled','disabled');
+                sel_name_wrap_recipient.attr('style', 'display:none');
+                sel_name_wrap_sender.attr('style', 'display:block');
+                input_name_sender.removeAttr('disabled');
+                name_input_2.val(name);
+                phone_input_2.val(phone);
+                adress_input_2.val(adress);
+                name_input_2.attr('disabled','disabled');
+                phone_input_2.attr('disabled','disabled');
+                adress_input_2.attr('disabled','disabled');
+
+                name_input.val(name_sender);
+                phone_input.val(phone_sender);
+                adress_input.val(adress_sender);
+                name_input.removeAttr('disabled');
+                phone_input.removeAttr('disabled');
+                adress_input.removeAttr('disabled');
+
+            }
+            if(select == 'creator'){
+                console.log(select);
+            }
+        }
+
+        function getsenderval (sender){
+           console.log(sender.value);
+        }
+
+        function getrecipientval (recipient){
+            console.log(recipient.value);
+        }
+
+    </script>
     <?php $APPLICATION->ShowHead();?>
 </head>
 
