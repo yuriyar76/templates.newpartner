@@ -71,6 +71,7 @@ $arResult['PERSONAL_PHONE'] = $params_user->arResult[0]['PERSONAL_PHONE'];
 
         function getval(sel, name, phone, adress, name_sender, phone_sender,
                 adress_sender, name_recipient, phone_recipient, adress_recipient) {
+
             let select = sel.value;
             let name_input = $('#modal_order_service_form_pay input[name=form_text_50]');
             let phone_input = $('#modal_order_service_form_pay input[name=form_text_51]');
@@ -86,9 +87,15 @@ $arResult['PERSONAL_PHONE'] = $params_user->arResult[0]['PERSONAL_PHONE'];
             let sel_name_wrap_recipient = $('#recipient_name_select_wrap');
             let input_name_recipient = $('#recipient_name_select');
 
+            let type_pay =  $('#form_dropdown_pay');
+            let option_pay_bank = $("#form_dropdown_pay option[value='61']");
+            let option_pay_cache = $("#form_dropdown_pay option[value='59']");
+
+            let payment_wrap = $('#form_dropdown_payment_wrap');
+            let payment_type = $('#form_dropdown_payment');
 
 
-            if(select == '102'){ /* Отправителем */
+            if(select == '102'){                           /* Отправителем */
 
                 sel_name_wrap_sender.attr('style', 'display:none');
                 input_name_sender.attr('disabled','disabled');
@@ -107,9 +114,13 @@ $arResult['PERSONAL_PHONE'] = $params_user->arResult[0]['PERSONAL_PHONE'];
                 name_input_2.removeAttr('disabled');
                 phone_input_2.removeAttr('disabled');
                 adress_input_2.removeAttr('disabled');
+                type_pay.removeAttr('disabled');
+                payment_wrap.attr('style', 'display:none');
+                payment_type.attr('disabled','disabled');
+
 
             }
-            if(select == '121'){  /* Получателем */
+            if(select == '121'){                              /* Получателем */
                 input_name_recipient.attr('disabled','disabled');
                 sel_name_wrap_recipient.attr('style', 'display:none');
                 sel_name_wrap_sender.attr('style', 'display:block');
@@ -127,22 +138,96 @@ $arResult['PERSONAL_PHONE'] = $params_user->arResult[0]['PERSONAL_PHONE'];
                 name_input.removeAttr('disabled');
                 phone_input.removeAttr('disabled');
                 adress_input.removeAttr('disabled');
+                type_pay.removeAttr('disabled');
+                payment_wrap.attr('style', 'display:none');
+                payment_type.attr('disabled','disabled');
+
 
             }
-            if(select == 'creator'){
+            if(select == 'creator'){                            /* Заказчиком */
+
+                name_input.val(name_sender);
+                phone_input.val(phone_sender);
+                adress_input.val(adress_sender);
+                name_input.removeAttr('disabled');
+                phone_input.removeAttr('disabled');
+                adress_input.removeAttr('disabled');
+
+                name_input_2.val(name_recipient);
+                phone_input_2.val(phone_recipient);
+                adress_input_2.val(adress_recipient);
+                name_input_2.removeAttr('disabled');
+                phone_input_2.removeAttr('disabled');
+                adress_input_2.removeAttr('disabled');
+
+                option_pay_bank.attr("selected", "selected");
+                option_pay_cache.removeAttr('selected');
+
+                type_pay.attr('disabled','disabled');
+
+                sel_name_wrap_sender.attr("style", "display:block");
+                input_name_sender.removeAttr('disabled');
+
+                sel_name_wrap_recipient.attr("style", "display:block");
+                input_name_recipient.removeAttr('disabled');
+
+                payment_wrap.attr('style', 'display:block');
+                payment_type.removeAttr('disabled');
+
                 console.log(select);
             }
         }
 
-        function getsenderval (sender){
-           console.log(sender.value);
+        function getidval (id){
+           let idel = +id.value;
+           let url = "/tools/change_user_fl.php";
+           let data = {
+                 getid: idel
+           };
+           $.get(
+               url,
+               data,
+               function (data) {
+                   let res =  JSON.parse(data);
+                   if(res.TYPE_ID == '415'){
+                       $("#modal_order_service_form_pay input[name=form_text_62]").val(res.NAME);
+                       $("#modal_order_service_form_pay textarea[name=form_textarea_103]").val(res.ADRESS);
+                       $("#modal_order_service_form_pay input[name=form_text_149]").val(res.PHONE);
+
+                   }
+                   if(res.TYPE_ID == '414'){
+                       $("#modal_order_service_form_pay input[name=form_text_50]").val(res.NAME);
+                       $("#modal_order_service_form_pay textarea[name=form_textarea_56]").val(res.ADRESS);
+                       $("#modal_order_service_form_pay input[name=form_text_51]").val(res.PHONE);
+
+                   }
+                   console.log(res);
+           });
         }
 
-        function getrecipientval (recipient){
-            console.log(recipient.value);
+        function setpayment(pay){
+            let type_pay =  $('#form_dropdown_pay');
+            let option_pay_bank = $("#form_dropdown_pay option[value='61']");
+            let option_pay_cache = $("#form_dropdown_pay option[value='59']");
+            type_pay.attr('disabled','disabled');
+            if(pay.value === 'sender_pay' || pay.value === 'recipient_pay'){
+                option_pay_cache.attr("selected", "selected");
+                option_pay_bank.removeAttr('selected');
+
+            }
+
+            if(pay.value === 'creator_pay'){
+                option_pay_cache.removeAttr('selected');
+                option_pay_bank.attr("selected", "selected");
+
+
+            }
+
         }
+
 
     </script>
+
     <?php $APPLICATION->ShowHead();?>
 </head>
 

@@ -11072,3 +11072,10 @@ body.sidebar-toggled footer.sticky-footer {
     background-size:75px;
     margin: -16px 0 0 -16px;
 }
+#recipient_name_select{
+    width:100%!important;
+}
+
+#sender_name_select{
+    width:100%!important;
+}

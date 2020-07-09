@@ -157,8 +157,9 @@ use Bitrix\Main\Localization\Loc;
             </div>
 
             <div class="modal-body">
-                <?php //dump($arResult['DEFAULT_SENDER']); ?>
+
                 <form id="modal_order_service_form_pay" action="" method="post">
+                    <?=bitrix_sessid_post()?>
                     <div class="info"></div>
                     <div class="alert alert-danger display-error" style="display: none"></div>
                     <h4 id="price_calc_p">Сумма к оплате - <span></span></h4>
@@ -175,7 +176,7 @@ use Bitrix\Main\Localization\Loc;
                                           '$name_recipient', '$phone_recipient', '$adress_recipient'"?>)">
                                     <option value="102" selected>Отправителем</option>
                                     <option value="121">Получателем</option>
-                                    <option value="creator">Заказчик</option>
+                                    <option value="creator">Заказчиком</option>
                                 </select>
                                 </div>
                                 <div  class="form-group form-group-sm">
@@ -189,7 +190,7 @@ use Bitrix\Main\Localization\Loc;
                                 <div id="sender_name_select_wrap" style="display:none" class="form-group form-group-sm">
                                     <label for="sender_name_select" class="control-label">Выбрать отправителя из адресной книги</label>
                                     <select class="form-control" disabled id="sender_name_select"
-                                    name="sender_name_select"  onchange="getsenderval(this)">
+                                    name="sender_name_select"  onchange="getidval(this)">
                                        <?php foreach($arResult['SENDERS'] as $key=>$value):?>
                                            <option <?=($value['NAME']===trim($name_sender))?'selected':''?>
                                                    value="<?=$value['ID']?>"><?=$value['NAME']?></option>
@@ -279,7 +280,7 @@ use Bitrix\Main\Localization\Loc;
                                 <div id="recipient_name_select_wrap" class="form-group form-group-sm">
                                 <label for="recipient_name_select" class="control-label">Выбрать получателя из адресной книги</label>
                                 <select class="form-control" id="recipient_name_select"
-                                        name="recipient_name_select" onchange="getrecipientval(this)">
+                                        name="recipient_name_select" onchange="getidval(this)">
                                     <?php foreach($arResult['RECIPIENTS'] as $key=>$value):?>
                                         <option <?=($value['NAME']===trim($name_recipient)?'selected':'')?>
                                                 value="<?=$value['ID']?>"><?=$value['NAME']?></option>
@@ -307,16 +308,21 @@ use Bitrix\Main\Localization\Loc;
                                            value="<?=$phone_recipient?>">
 
                                 </div>
-                                <div class="form-group form-group-sm">
-                                    <?php
-                                    $radio_59 = " selected";
-                                    $radio_60 = "";
+                                <div style="display: none" id="form_dropdown_payment_wrap" class="form-group form-group-sm">
+                                    <label for="form_dropdown_payment" class="control-label">Выбор плательщика </label>
+                                    <select onchange="setpayment(this)" disabled id="form_dropdown_payment" class="form-control"
+                                            name="form_dropdown_payment">
+                                        <option value="creator_pay" selected>Заказчик</option>
+                                        <option value="sender_pay">Отправитель</option>
+                                        <option value="recipient_pay">Получатель</option>
+                                    </select>
+                                </div>
 
-                                    ?>
-                                    <label for="" class="control-label">Способ оплаты</label>
-                                    <select class="form-control" name="form_dropdown_SIMPLE_QUESTION_526">
-                                        <option value="61"<?=$radio_60;?>>Банковская карта</option>
-                                        <option value="59"<?=$radio_59;?>>Наличные</option>
+                                <div class="form-group form-group-sm">
+                                     <label for="form_dropdown_pay" class="control-label">Способ оплаты</label>
+                                    <select id="form_dropdown_pay" class="form-control" name="form_dropdown_SIMPLE_QUESTION_526">
+                                        <option value="61">Банковская карта</option>
+                                        <option value="59" selected>Наличные</option>
                                     </select>
                                 </div>
 
