@@ -38,7 +38,22 @@ $arResult['PERSONAL_PHONE'] = $params_user->arResult[0]['PERSONAL_PHONE'];
     <link href="/bitrix/templates/newpartner-2016/css/jquery-ui.css" rel="stylesheet">
     <link href="/bitrix/templates/newpartner-fl/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="/bitrix/templates/newpartner-fl/css/styles.css" rel="stylesheet">
+
     <script>
+
+        function auto_city_send(id){
+            $('#city_'+id).autocomplete({
+                source: '/api.php?type=city&form=calc',
+                minLength: 0,
+                select: function( event, ui ) {
+                    $(this).val( ui.item.value);
+                    $('#citycode_'+id).val( ui.item.id);
+                    return false;
+                }
+            });
+            console.log(id);
+        }
+
         function delItem(id, sess_id){
             let url = '/tools/change_user_fl.php?delete=Y';
             let data = {
@@ -62,7 +77,22 @@ $arResult['PERSONAL_PHONE'] = $params_user->arResult[0]['PERSONAL_PHONE'];
                     data: {form_data: fData},
                     dataType: 'json',
                     success: function(json){
-                        location.reload();
+
+                       if(!json.change){
+                           console.log(json.id);
+                          let id = json.id;
+                          let id_modal = $('#'+id+' .err_edit');
+                          id_modal.empty();
+                          id_modal.append( `
+                          <div class="alert alert-danger" role="alert">
+                           ${json.messerr}
+                          </div>
+                          `);
+                       }else{
+                           location.reload();
+                       }
+
+                       //
                     }
                 });
             });

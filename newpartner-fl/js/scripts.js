@@ -282,7 +282,6 @@ $(document).ready(function() {
        $('#dataTable_form_submit').click();
     });
 
-
 });
 
 

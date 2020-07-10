@@ -398,6 +398,15 @@ use Bitrix\Main\Localization\Loc;
                                     <input type="text" class="form-control" name="PHONE" required
                                            value="">
                                 </div>
+                                <div class="form-group form-group-sm">
+                                    <input name="CITY_ID" id="citycode_0" type="hidden">
+                                    <label for="city_0" class="control-label">Город отправителя<span
+                                                class="form-required">*</span></label>
+                                    <input id="city_0" type="text" name="CITY"
+                                           class="form-control autocity ui-autocomplete-input"
+                                           required value="">
+                                    <small>Начинайте воодить название города, выберете из выпадающего списка</small>
+                                </div>
 
                                 <div class="form-group form-group-sm">
                                     <label for="" class="control-label">Адрес отправителя<span class="form-required">*</span></label>
@@ -459,7 +468,14 @@ use Bitrix\Main\Localization\Loc;
                                     <input type="text" class="form-control" name="PHONE" required
                                            value="">
                                 </div>
-
+                                <div class="form-group form-group-sm">
+                                    <input name="CITY_ID" id="citycode_1" type="hidden">
+                                    <label for="city_1" class="control-label">Город получателя<span
+                                                class="form-required">*</span></label>
+                                    <input id="city_1" type="text" name="CITY"
+                                           class="form-control autocity ui-autocomplete-input"  required value="">
+                                    <small>Начинайте вводить название города, выберете из выпадающего списка</small>
+                                </div>
                                 <div class="form-group form-group-sm">
                                     <label for="" class="control-label">Адрес получателя<span class="form-required">*</span></label>
                                     <textarea class="form-control" required name="ADRESS"></textarea>
