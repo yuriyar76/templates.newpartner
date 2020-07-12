@@ -22,7 +22,7 @@ $name_recipient = $arResult['DEFAULT_RECIPIENT']['NAME'];
 $phone_recipient =  $arResult['DEFAULT_RECIPIENT']['PHONE'];
 $adress_recipient =  $arResult['DEFAULT_RECIPIENT']['ADRESS'];
 
-
+//dump( $arResult);
 ?>
 <!-- /.container-fluid -->
 </div>

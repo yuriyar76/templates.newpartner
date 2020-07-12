@@ -1,8 +1,7 @@
 <?php
 use Bitrix\Main\Localization\Loc;
-
 ?>
-
+<!--профиль-->
 <div class="modal fade" id="fl_profile" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -70,7 +69,8 @@ use Bitrix\Main\Localization\Loc;
         </div>
     </div>
 </div>
-<!-- Modal -->
+
+<!-- трек -->
 <div class="modal fade" id="fl_track" data-backdrop="static" data-keyboard="false" tabindex="-1"
      role="dialog" aria-labelledby="fl_track" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -97,6 +97,7 @@ use Bitrix\Main\Localization\Loc;
     </div>
 </div>
 
+<!--калькулятор-->
 <div class="modal fade" id="modal_calculate_cost_new" data-backdrop="static" tabindex="-1" role="dialog"
      aria-labelledby="modal_calculate_cost_new">
     <div class="modal-dialog" role="document">
@@ -146,6 +147,7 @@ use Bitrix\Main\Localization\Loc;
     </div>
 </div>
 
+<!-- Новая заявка -->
 <div id="modal_order_service_pay" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog">
     <div class="modal-dialog  modal-dialog-scrollable modal-lg" role="document">
         <div class="modal-content">
@@ -206,7 +208,6 @@ use Bitrix\Main\Localization\Loc;
                                            $_COOKIE["np_form_text_50"]):$name.' '.
                                                $lastname;?>">
                                 </div>
-
                                 <div class="form-group form-group-sm">
                                     <label for="" class="control-label">Номер телефона отправителя<span
                                                 class="form-required">*</span></label>
@@ -214,7 +215,6 @@ use Bitrix\Main\Localization\Loc;
                                  value="<?=($_COOKIE["np_form_text_51"])?iconv('utf-8','windows-1251',
                                                $_COOKIE["np_form_text_51"]):$phone;?>">
                                 </div>
-
                                 <div class="form-group form-group-sm">
                                     <label for="" class="control-label">Город отправителя<span class="form-required">*</span></label>
                                     <input type="hidden"  id="city_to_hidden5" name="form_text_hidden55"
@@ -369,6 +369,7 @@ use Bitrix\Main\Localization\Loc;
     </div>
 </div>
 
+<!-- Новый Отправитель -->
 <div id="add_modal_sender" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog">
     <div class="modal-dialog  modal-dialog-scrollable modal-lg" role="document">
         <div class="modal-content">
@@ -379,6 +380,7 @@ use Bitrix\Main\Localization\Loc;
                 </button>
             </div>
             <div class="modal-body">
+                <div id="err_sender"></div>
                 <form id="add_modal_sender_form"
                       action="/tools/change_user_fl.php?newsender=<?=$USER->GetID()?>&sender_add=Y" method="post">
                     <?=bitrix_sessid_post()?>
@@ -439,6 +441,7 @@ use Bitrix\Main\Localization\Loc;
     </div>
 </div>
 
+<!-- Новый получатель -->
 <div id="add_modal_recipient" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog">
     <div class="modal-dialog  modal-dialog-scrollable modal-lg" role="document">
         <div class="modal-content">
@@ -449,6 +452,7 @@ use Bitrix\Main\Localization\Loc;
                 </button>
             </div>
             <div class="modal-body">
+                <div id="err_recipient"></div>
                 <form id="add_modal_recipient_form"
                       action="/tools/change_user_fl.php?newsender=<?=$USER->GetID()?>&recipient_add=Y" method="post">
                     <?=bitrix_sessid_post()?>
@@ -499,10 +503,7 @@ use Bitrix\Main\Localization\Loc;
                 </form>
             </div>
             <div class="modal-footer">
-
             </div>
-
-
         </div>
     </div>
 </div>

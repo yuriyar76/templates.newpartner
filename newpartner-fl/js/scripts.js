@@ -201,15 +201,14 @@ $(document).ready(function() {
                         messprof.attr('style', 'display:block');
                     }
                 }else{
-                    $('#add_modal_sender').modal('hide');
+                    let err = $('#err_sender');
+                    err.empty();
                     let messerr = json.messerr;
                     if(messerr){
-                        let messprof =  $('#mess-profile');
-                        let message = `<div class="alert alert-danger" role="alert">
+                         let message = `<div class="alert alert-danger" role="alert">
                              ${messerr}
                     </div>`;
-                        messprof.attr('style', 'display:block');
-                        messprof.append(message);
+                        err.append(message);
                     }
                 }
             }
@@ -247,15 +246,14 @@ $(document).ready(function() {
                         messprof.attr('style', 'display:block');
                     }
                 }else{
-                    $('#add_modal_recipient').modal('hide');
+                    let err = $('#err_recipient');
+                    err.empty();
                     let messerr = json.messerr;
                     if(messerr){
-                        let messprof =  $('#mess-profile');
                         let message = `<div class="alert alert-danger" role="alert">
                              ${messerr}
                     </div>`;
-                        messprof.attr('style', 'display:block');
-                        messprof.append(message);
+                        err.append(message);
                     }
                 }
             }
@@ -266,19 +264,22 @@ $(document).ready(function() {
         e.preventDefault();
         let $that = $(this),
             fData = $that.serializeArray();
-            //console.log(fData);
-        $.ajax({
+            $.ajax({
             url: $that.attr('action'),
             type: $that.attr('method'),
             data: {form_data: fData},
             dataType: 'json',
             success: function(json){
+                let id =json.id;
+                let el = $(`#dataTable_form input[value=${id}]`);
+                console.log(el.parent());
             }
         });
 
     });
     $('#dataTable_form input[type=radio]').on('click', function (e) {
        let $that = $(this);
+       console.log(this);
        $('#dataTable_form_submit').click();
     });
 

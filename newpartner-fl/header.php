@@ -66,7 +66,47 @@ $arResult['PERSONAL_PHONE'] = $params_user->arResult[0]['PERSONAL_PHONE'];
                 location.reload();
             });
         }
-        function editItem(id_f, id_s) {
+/* функция если нет возможности использовать форму */
+        function editItem(id_f){
+            let elem = $('#'+id_f+' .modal-body').find('input');
+            let obj = {};
+            for(let i=0; i<elem.length; i++){
+                let name = $(elem[i]).attr('name');
+                obj[name] = $(elem[i]).val();
+            }
+           // console.log(obj);
+            let $fData = JSON.stringify(obj);
+            $.ajax({
+                url: '/tools/change_user_fl.php?edit=Y',
+                type: 'post',
+                data: {form_data: $fData},
+                dataType: 'json',
+                success: function(json){
+                    //console.log(json);
+                    if(!json.change){
+                       // console.log(json.id);
+                        let id = json.id;
+                        let id_modal = $('#'+id+' .err_edit');
+                        id_modal.empty();
+                        id_modal.append( `
+                          <div class="alert alert-danger" role="alert">
+                           ${json.messerr}
+                          </div>
+                          `);
+                    }else{
+                        location.reload();
+                    }
+
+                    //
+                }
+            });
+            //console.log(arr);
+
+        }
+
+       /* функция если есть форма */
+        function editItem_old(id_f, id_s) {
+            console.log(id_f+'  '+id_s);
             $('#'+id_f).on('submit', function(e){
                 e.preventDefault();
                 let $that = $(this),
