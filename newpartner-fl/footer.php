@@ -4,23 +4,11 @@
 }
 
 $arResult['USER'] = $_SESSION['user_current'];
-$arResult['DEFAULT_SENDER'] = $_SESSION['DEFAULT_SENDER'];
-$arResult['DEFAULT_RECIPIENT'] = $_SESSION['DEFAULT_RECIPIENT'];
-$arResult['SENDERS'] = $_SESSION['SENDERS'];
-$arResult['RECIPIENTS'] = $_SESSION['RECIPIENTS'];
 $name = $arResult['USER']['name'];
 $lastname = $arResult['USER']['lastName'];
 $phone =  $arResult['USER']['phone'];
 $adress =  $arResult['USER']['adress'];
 $fullname = $name.' '.$lastname;
-
-$name_sender = $arResult['DEFAULT_SENDER']['NAME'];
-$phone_sender =  $arResult['DEFAULT_SENDER']['PHONE'];
-$adress_sender =  $arResult['DEFAULT_SENDER']['ADRESS'];
-
-$name_recipient = $arResult['DEFAULT_RECIPIENT']['NAME'];
-$phone_recipient =  $arResult['DEFAULT_RECIPIENT']['PHONE'];
-$adress_recipient =  $arResult['DEFAULT_RECIPIENT']['ADRESS'];
 
 //dump( $arResult);
 ?>
@@ -64,6 +52,7 @@ $adress_recipient =  $arResult['DEFAULT_RECIPIENT']['ADRESS'];
 <script src="/bitrix/templates/newpartner-2016/js/jquery-ui-new.js"></script>
 <script src="/bitrix/templates/newpartner-2016/js/jquery.ui.widget.js"></script>
 <script src="/bitrix/templates/newpartner-2016/js/jquery.fileupload.js"></script>
+<script src="/bitrix/templates/newpartner-2016/js/jquery.cookie.js"></script>
 <script src="/bitrix/templates/newpartner-2016/js/jquery.maskedinput.min.js"></script>
 <script src="/bitrix/templates/newpartner-2016/js/scripts.js"></script>
 <script src="/bitrix/templates/newpartner-2016/js/script.js"></script>

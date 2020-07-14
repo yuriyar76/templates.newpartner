@@ -173,9 +173,7 @@ use Bitrix\Main\Localization\Loc;
                                 <label for="" class="control-label">Вы будете</label>
                                 <select  class="form-control" name="form_radio_SIMPLE_QUESTION_971"
                                          id="pay_form_radio_SIMPLE_QUESTION_971"
-                                          onchange="getval(this, <?="'$fullname', '$phone', '$adress',
-                                          '$name_sender', '$phone_sender', '$adress_sender',
-                                          '$name_recipient', '$phone_recipient', '$adress_recipient'"?>)">
+                                          onchange="getval(this, <?="'$fullname', '$phone', '$adress'"?>)">
                                     <option value="102" selected>Отправителем</option>
                                     <option value="121">Получателем</option>
                                     <option value="creator">Заказчиком</option>
@@ -185,49 +183,40 @@ use Bitrix\Main\Localization\Loc;
                                     <label for="" class="control-label">Ваш E-mail<span
                                                 class="form-required">*</span></label>
                                     <input disabled type="text" class="form-control" name="form_email_52" required
-                                           value="<?=($_COOKIE["np_form_email_52"])?iconv('utf-8',
-                                     'windows-1251',$_COOKIE["np_form_email_52"]):$_SESSION['form_mail'];?>">
+                                           value="<?=$_SESSION['form_mail'];?>">
                                 </div>
-                                <?php if(!empty($arResult['SENDERS'])):?>
+
                                 <div id="sender_name_select_wrap" style="display:none" class="form-group form-group-sm">
-                                    <label for="sender_name_select" class="control-label">Выбрать отправителя из адресной книги</label>
+                                    <label for="sender_name_select" class="control-label">Выбрать отправителя из
+                                        адресной книги</label>
                                     <select class="form-control" disabled id="sender_name_select"
                                     name="sender_name_select"  onchange="getidval(this)">
-                                       <?php foreach($arResult['SENDERS'] as $key=>$value):?>
-                                           <option <?=($value['NAME']===trim($name_sender))?'selected':''?>
-                                                   value="<?=$value['ID']?>"><?=$value['NAME']?></option>
-                                        <?php endforeach;?>
                                     </select>
                                 </div>
-                                <?php endif;?>
+
                                 <div class="form-group form-group-sm">
                                     <label for="" class="control-label">ФИО отправителя<span
                                                 class="form-required">*</span></label>
                                     <input disabled type="text" class="form-control" name="form_text_50" required
-                                value="<?=($_COOKIE["np_form_text_50"])?iconv('utf-8','windows-1251',
-                                           $_COOKIE["np_form_text_50"]):$name.' '.
-                                               $lastname;?>">
+                                value="<?=$name.' '.$lastname;?>">
                                 </div>
                                 <div class="form-group form-group-sm">
                                     <label for="" class="control-label">Номер телефона отправителя<span
                                                 class="form-required">*</span></label>
                                     <input disabled type="text" class="form-control" name="form_text_51" required
-                                 value="<?=($_COOKIE["np_form_text_51"])?iconv('utf-8','windows-1251',
-                                               $_COOKIE["np_form_text_51"]):$phone;?>">
+                                 value="<?=$phone;?>">
                                 </div>
                                 <div class="form-group form-group-sm">
                                     <label for="" class="control-label">Город отправителя<span class="form-required">*</span></label>
                                     <input type="hidden"  id="city_to_hidden5" name="form_text_hidden55"
-                                           value="<?=($_COOKIE["np_form_text_55"])?iconv('utf-8','windows-1251',
-                                               $_COOKIE["np_form_text_55"]):'';?>">
+                                           value="">
                                     <input type="text" class="form-control city_autocomplete" id="city_to5"
-                                           name="form_text_55" value="<?=($_COOKIE["np_form_text_55"])?
-                                        iconv('utf-8','windows-1251',$_COOKIE["np_form_text_55"]):'';?>">
+                                           name="form_text_55" value="">
                                 </div>
                                 <div class="form-group form-group-sm">
-                                    <label for="" class="control-label">Адрес отправителя<span class="form-required">*</span></label>
-                                    <textarea disabled class="form-control" required name="form_textarea_56"><?=($_COOKIE["np_form_textarea_56"])?iconv('utf-8','windows-1251',
-                                            $_COOKIE["np_form_textarea_56"]):$adress;?>
+                                    <label for="" class="control-label">Адрес отправителя<span
+                                                class="form-required">*</span></label>
+                                    <textarea disabled class="form-control" required name="form_textarea_56"><?=$adress;?>
                                     </textarea>
                                 </div>
                                 <div class="form-group form-group-sm">
@@ -264,7 +253,7 @@ use Bitrix\Main\Localization\Loc;
                             ?>
                         </span>
                                  <input type="text" class="form-control maskdate" required name="form_text_53"
-                                        placeholder="ДД.ММ.ГГГГ" ria-describedby="basic-addon-form_text_53">
+                                        placeholder="ДД.ММ.ГГГГ" aria-describedby="basic-addon-form_text_53">
                                     </div>
                                 </div>
                                 <div class="form-group form-group-sm">
@@ -272,31 +261,32 @@ use Bitrix\Main\Localization\Loc;
                                     <input type="text" class="form-control masktime" name="form_text_54">
                                 </div>
                                 <div class="form-group form-group-sm">
-                                    <label for="" class="control-label">Город получателя<span class="form-required">*</span></label>
+                                    <label for="" class="control-label">Город получателя<span
+                                                class="form-required">*</span>
+                                    </label>
                                     <input id="city_from_hidden5" type="hidden"  name="form_text_hidden57">
-                                    <input id="city_from5" type="text" class="form-control city_autocomplete" required name="form_text_57">
+                                    <input id="city_from5" type="text" class="form-control city_autocomplete"
+                                           required name="form_text_57">
                                 </div>
-                                <?php if($arResult['RECIPIENTS']):?>
+
                                 <div id="recipient_name_select_wrap" class="form-group form-group-sm">
-                                <label for="recipient_name_select" class="control-label">Выбрать получателя из адресной книги</label>
+                                <label for="recipient_name_select" class="control-label">Выбрать получателя
+                                    из адресной книги</label>
                                 <select class="form-control" id="recipient_name_select"
                                         name="recipient_name_select" onchange="getidval(this)">
-                                    <?php foreach($arResult['RECIPIENTS'] as $key=>$value):?>
-                                        <option <?=($value['NAME']===trim($name_recipient)?'selected':'')?>
-                                                value="<?=$value['ID']?>"><?=$value['NAME']?></option>
-                                    <?php endforeach;?>
+
                                 </select>
                                 </div>
-                                <?php endif;?>
+
                                 <div class="form-group form-group-sm">
                                     <label for="" class="control-label">ФИО получателя<span class="form-required">*</span></label>
                                     <input type="text" class="form-control" required name="form_text_62"
-                                           value="<?=$name_recipient?>">
+                                           value="">
 
                                 </div>
                                 <div class="form-group form-group-sm">
                                     <label for="" class="control-label">Адрес получателя<span class="form-required">*</span></label>
-                                    <textarea class="form-control" required name="form_textarea_103"><?=$adress_recipient?>
+                                    <textarea class="form-control" required name="form_textarea_103">
                                     </textarea>
 
                                 </div>
@@ -305,7 +295,7 @@ use Bitrix\Main\Localization\Loc;
                                     <label for="" class="control-label">Номер телефона получателя<span
                                                 class="form-required">*</span></label>
                                     <input type="text" class="form-control " required name="form_text_149"
-                                           value="<?=$phone_recipient?>">
+                                           value="">
 
                                 </div>
                                 <div style="display: none" id="form_dropdown_payment_wrap" class="form-group form-group-sm">
@@ -338,7 +328,8 @@ use Bitrix\Main\Localization\Loc;
                         <div class="col-md-12">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" id="confirmation_order_service" required name="form_checkbox_confirmation" value="146"> Нажимая кнопку &laquo;Заказать&raquo;, я подтверждаю свою дееспособность, даю согласие на обработку своих персональных данных в соответствии с <a href="http://newpartner.ru/personal-data/" target="_blank">Условиями использования персональных данных<font color="red"><span class="form-required">*</span></font></a>
+                                    <input type="checkbox" id="confirmation_order_service" required
+                                           name="form_checkbox_confirmation" value="146"> Нажимая кнопку &laquo;Заказать&raquo;, я подтверждаю свою дееспособность, даю согласие на обработку своих персональных данных в соответствии с <a href="http://newpartner.ru/personal-data/" target="_blank">Условиями использования персональных данных<font color="red"><span class="form-required">*</span></font></a>
                                 </label>
                             </div>
                         </div>
