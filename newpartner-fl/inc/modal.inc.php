@@ -104,11 +104,7 @@ use Bitrix\Main\Localization\Loc;
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" >Новая заявка. <small>Стоимость и сроки доставки</small></h5>
-
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+        </div>
             <div style="margin-bottom: 0!important; display: none;" class="alert alert-danger display-error">
                 <div class="messerr"></div>
             </div>
@@ -135,13 +131,12 @@ use Bitrix\Main\Localization\Loc;
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">
+                <button id="modal_calculate_cost_new_close" type="button" class="btn btn-primary" >
                 <span class="icon text-white-50">
                             <i class="fas fa-walking"></i>
                             </span>&nbsp;
                     Назад
                 </button>
-
             </div>
         </div>
     </div>
@@ -153,7 +148,7 @@ use Bitrix\Main\Localization\Loc;
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" >Новая заявка. <small>Заполнение необходимых данных</small></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button id="modal_order_service_pay_close" type="button" class="close"  aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -182,6 +177,7 @@ use Bitrix\Main\Localization\Loc;
                                 <div  class="form-group form-group-sm">
                                     <label for="" class="control-label">Ваш E-mail<span
                                                 class="form-required">*</span></label>
+                                    <input name="form_email_52_hidden" value="<?=$_SESSION['form_mail'];?>" type="hidden">
                                     <input disabled type="text" class="form-control" name="form_email_52" required
                                            value="<?=$_SESSION['form_mail'];?>">
                                 </div>
@@ -197,12 +193,14 @@ use Bitrix\Main\Localization\Loc;
                                 <div class="form-group form-group-sm">
                                     <label for="" class="control-label">ФИО отправителя<span
                                                 class="form-required">*</span></label>
+                                    <input name="form_text_50_hidden" type="hidden" value="<?=$name.' '.$lastname;?>">
                                     <input disabled type="text" class="form-control" name="form_text_50" required
                                 value="<?=$name.' '.$lastname;?>">
                                 </div>
                                 <div class="form-group form-group-sm">
                                     <label for="" class="control-label">Номер телефона отправителя<span
                                                 class="form-required">*</span></label>
+                                    <input type="hidden" name="form_text_51_hidden" value="<?=$phone;?>">
                                     <input disabled type="text" class="form-control" name="form_text_51" required
                                  value="<?=$phone;?>">
                                 </div>
@@ -216,7 +214,7 @@ use Bitrix\Main\Localization\Loc;
                                 <div class="form-group form-group-sm">
                                     <label for="" class="control-label">Адрес отправителя<span
                                                 class="form-required">*</span></label>
-                                    <textarea disabled class="form-control" required name="form_textarea_56"><?=$adress;?>
+                                    <textarea  class="form-control" required name="form_textarea_56"><?=$adress;?>
                                     </textarea>
                                 </div>
                                 <div class="form-group form-group-sm">

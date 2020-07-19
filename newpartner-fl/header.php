@@ -66,7 +66,7 @@ $arResult['PERSONAL_PHONE'] = $params_user->arResult[0]['PERSONAL_PHONE'];
                 location.reload();
             });
         }
-/* функция если нет возможности использовать форму */
+        /* функция если нет возможности использовать форму */
         function editItem(id_f){
             let elem = $('#'+id_f+' .modal-body').find('input');
             let arr = {};
@@ -74,7 +74,7 @@ $arResult['PERSONAL_PHONE'] = $params_user->arResult[0]['PERSONAL_PHONE'];
                 let name = $(elem[i]).attr('name');
                 arr[name] = $(elem[i]).val();
             }
-           // console.log(arr);
+            // console.log(arr);
             let $fData = JSON.stringify(arr);
 
             $.ajax({
@@ -85,7 +85,7 @@ $arResult['PERSONAL_PHONE'] = $params_user->arResult[0]['PERSONAL_PHONE'];
                 success: function(json){
                     //console.log(json);
                     if(!json.change){
-                       // console.log(json.id);
+                        // console.log(json.id);
                         let id = json.id;
                         let id_modal = $('#'+id+' .err_edit');
                         id_modal.empty();
@@ -105,7 +105,7 @@ $arResult['PERSONAL_PHONE'] = $params_user->arResult[0]['PERSONAL_PHONE'];
 
         }
 
-       /* функция если есть форма */
+        /* функция если есть форма */
         function editItem_old(id_f, id_s) {
             console.log(id_f+'  '+id_s);
             $('#'+id_f).on('submit', function(e){
@@ -119,21 +119,21 @@ $arResult['PERSONAL_PHONE'] = $params_user->arResult[0]['PERSONAL_PHONE'];
                     dataType: 'json',
                     success: function(json){
 
-                       if(!json.change){
-                           console.log(json.id);
-                          let id = json.id;
-                          let id_modal = $('#'+id+' .err_edit');
-                          id_modal.empty();
-                          id_modal.append( `
+                        if(!json.change){
+                            console.log(json.id);
+                            let id = json.id;
+                            let id_modal = $('#'+id+' .err_edit');
+                            id_modal.empty();
+                            id_modal.append( `
                           <div class="alert alert-danger" role="alert">
                            ${json.messerr}
                           </div>
                           `);
-                       }else{
-                           location.reload();
-                       }
+                        }else{
+                            location.reload();
+                        }
 
-                       //
+                        //
                     }
                 });
             });
@@ -141,13 +141,14 @@ $arResult['PERSONAL_PHONE'] = $params_user->arResult[0]['PERSONAL_PHONE'];
         }
 
         function getval(sel, name, phone, adress) {
+            /* получатель - отправитель по умолчанию */
             let sdn = $.cookie('ds_name');
             let sdp = $.cookie('ds_phone');
             let sda = $.cookie('ds_adr');
             let rdn = $.cookie('dr_name');
-            let rdp = $.cookie('dr_phone_name');
+            let rdp = $.cookie('dr_phone');
             let rda = $.cookie('dr_adr');
-            let cookies = document.cookie;
+            /*let cookies = document.cookie;
             let arrc = cookies.split(';');
             let re = new RegExp("[a-z]{2}_[a-z]{2,4}_[0-9]+=.+");
             let arrcv = [];
@@ -155,7 +156,7 @@ $arResult['PERSONAL_PHONE'] = $params_user->arResult[0]['PERSONAL_PHONE'];
                if( re.test(arrc[i])){
                 arrcv[i] = arrc[i].split('=');
                }
-            }
+            }*/
             //console.log(arrcv);
 
             let select = sel.value;
@@ -171,102 +172,128 @@ $arResult['PERSONAL_PHONE'] = $params_user->arResult[0]['PERSONAL_PHONE'];
 
             let sel_name_wrap_sender = $('#sender_name_select_wrap');
             let input_name_sender = $('#sender_name_select');
+            let InputOptsender = $('#sender_name_select option');
             let sel_name_wrap_recipient = $('#recipient_name_select_wrap');
             let input_name_recipient = $('#recipient_name_select');
+            let InputOptRec = $('#recipient_name_select option');
 
             let type_pay =  $('#form_dropdown_pay');
             let option_pay_bank = $("#form_dropdown_pay option[value='61']");
             let option_pay_cache = $("#form_dropdown_pay option[value='59']");
+            let type_pay_comm = type_pay.parent();
+            type_pay_comm.attr('style', 'position: relative;');
 
             let payment_wrap = $('#form_dropdown_payment_wrap');
             let payment_type = $('#form_dropdown_payment');
-
+            let payment_type_creator = $("#form_dropdown_pay option[value='creator_pay']");
+            let ks = InputOptsender.size();
+            let kr = InputOptRec.size();
 
             if(select == '102'){                           /* Отправителем */
-
+                if(kr){
+                    sel_name_wrap_recipient.attr('style', 'display:block');
+                }else{
+                    sel_name_wrap_recipient.attr('style', 'display:none');
+                }
+                type_pay.attr('style','visibility: visible;');
                 sel_name_wrap_sender.attr('style', 'display:none');
                 input_name_sender.attr('disabled','disabled');
-                sel_name_wrap_recipient.attr('style', 'display:block');
+                //sel_name_wrap_recipient.attr('style', 'display:block');
                 input_name_recipient.removeAttr('disabled');
                 name_input.val(name);
                 phone_input.val(phone);
                 adress_input.val(adress);
                 name_input.attr('disabled','disabled');
                 phone_input.attr('disabled','disabled');
-                adress_input.attr('disabled','disabled');
+                //adress_input.attr('disabled','disabled');
 
 
                 name_input_2.removeAttr('disabled');
                 phone_input_2.removeAttr('disabled');
-                adress_input_2.removeAttr('disabled');
+                //adress_input_2.removeAttr('disabled');
 
-                if(rdn) {name_input_2.val(rdn);}
-                if(rdp) {phone_input_2.val(rdp);}
-                if(rda) {adress_input_2.val(rda);}
+                if(rdn) {name_input_2.val(rdn);}else{name_input_2.val("");}
+                if(rdp) {phone_input_2.val(rdp);}else{phone_input_2.val("");}
+                if(rda) {adress_input_2.val(rda);}else{adress_input_2.val("");}
 
                 type_pay.removeAttr('disabled');
                 payment_wrap.attr('style', 'display:none');
                 payment_type.attr('disabled','disabled');
+                $('#type_pay_comm').remove();
 
-                /* options */
-                if(arrcv.length > 0){
-                  $.each(arrcv, function (index, value) {
-                      if(value){
-                          console.log(value[0]+' '+value[1]);
-                      }
-
-                  });
-                }
 
 
             }
             if(select == '121'){                              /* Получателем */
+                if(ks){
+                    sel_name_wrap_sender.attr('style', 'display:block');
+                }else{
+                    sel_name_wrap_sender.attr('style', 'display:none');
+                }
+
+                type_pay.attr('style','visibility: visible;');
                 input_name_recipient.attr('disabled','disabled');
                 sel_name_wrap_recipient.attr('style', 'display:none');
-                sel_name_wrap_sender.attr('style', 'display:block');
+                //sel_name_wrap_sender.attr('style', 'display:block');
                 input_name_sender.removeAttr('disabled');
                 name_input_2.val(name);
                 phone_input_2.val(phone);
                 adress_input_2.val(adress);
                 name_input_2.attr('disabled','disabled');
                 phone_input_2.attr('disabled','disabled');
-                adress_input_2.attr('disabled','disabled');
+                //adress_input_2.attr('disabled','disabled');
 
 
                 name_input.removeAttr('disabled');
                 phone_input.removeAttr('disabled');
-                adress_input.removeAttr('disabled');
-                if(sdn) {name_input.val(sdn);}
-                if(sdp) {phone_input.val(sdp);}
-                if(sda) {adress_input.val(sda);}
+                // adress_input.removeAttr('disabled');
+                if(sdn) {name_input.val(sdn);}else{name_input.val("");}
+                if(sdp) {phone_input.val(sdp);}else{phone_input.val("");}
+                if(sda) {adress_input.val(sda);}else{adress_input.val("");}
 
                 type_pay.removeAttr('disabled');
                 payment_wrap.attr('style', 'display:none');
                 payment_type.attr('disabled','disabled');
-
+                $('#type_pay_comm').remove();
 
             }
             if(select == 'creator'){                            /* Заказчиком */
 
-
+                if(kr){
+                    sel_name_wrap_recipient.attr('style', 'display:block');
+                }else{
+                    sel_name_wrap_recipient.attr('style', 'display:none');
+                }
+                if(ks){
+                    sel_name_wrap_sender.attr('style', 'display:block');
+                }else{
+                    sel_name_wrap_sender.attr('style', 'display:none');
+                }
+                payment_type_creator.attr("selected", "selected");
                 name_input.removeAttr('disabled');
                 phone_input.removeAttr('disabled');
-                adress_input.removeAttr('disabled');
-
+                //adress_input.removeAttr('disabled');
+                if(sdn) {name_input.val(sdn);}else{name_input.val("");}
+                if(sdp) {phone_input.val(sdp);}else{phone_input.val("");}
+                if(sda) {adress_input.val(sda);}else{adress_input.val("");}
 
                 name_input_2.removeAttr('disabled');
                 phone_input_2.removeAttr('disabled');
-                adress_input_2.removeAttr('disabled');
+                //adress_input_2.removeAttr('disabled');
+                if(rdn) {name_input_2.val(rdn);}else{name_input_2.val("");}
+                if(rdp) {phone_input_2.val(rdp);}else{phone_input_2.val("");}
+                if(rda) {adress_input_2.val(rda);}else{adress_input_2.val("");}
 
                 option_pay_bank.attr("selected", "selected");
                 option_pay_cache.removeAttr('selected');
 
-                type_pay.attr('disabled','disabled');
-
-                sel_name_wrap_sender.attr("style", "display:block");
+                type_pay.attr('style','visibility: hidden;');
+                type_pay_comm.append(`<div style='color:red; font-weight: bold; position: absolute; top: 55%;'
+                id='type_pay_comm'> БАНКОВСКОЙ КАРТОЙ</div>`);
+                //sel_name_wrap_sender.attr("style", "display:block");
                 input_name_sender.removeAttr('disabled');
 
-                sel_name_wrap_recipient.attr("style", "display:block");
+                //sel_name_wrap_recipient.attr("style", "display:block");
                 input_name_recipient.removeAttr('disabled');
 
                 payment_wrap.attr('style', 'display:block');
@@ -277,47 +304,49 @@ $arResult['PERSONAL_PHONE'] = $params_user->arResult[0]['PERSONAL_PHONE'];
         }
 
         function getidval (id){
-           let idel = +id.value;
-           let url = "/tools/change_user_fl.php";
-           let data = {
-                 getid: idel
-           };
-           $.get(
-               url,
-               data,
-               function (data) {
-                   let res =  JSON.parse(data);
-                   if(res.TYPE_ID == '415'){
-                       $("#modal_order_service_form_pay input[name=form_text_62]").val(res.NAME);
-                       $("#modal_order_service_form_pay textarea[name=form_textarea_103]").val(res.ADRESS);
-                       $("#modal_order_service_form_pay input[name=form_text_149]").val(res.PHONE);
+            let idel = +id.value;
+            let url = "/tools/change_user_fl.php";
+            let data = {
+                getid: idel
+            };
+            $.get(
+                url,
+                data,
+                function (data) {
+                    let res =  JSON.parse(data);
+                    if(res.TYPE_ID == '415'){
+                        $("#modal_order_service_form_pay input[name=form_text_62]").val(res.NAME);
+                        $("#modal_order_service_form_pay textarea[name=form_textarea_103]").val(res.ADRESS);
+                        $("#modal_order_service_form_pay input[name=form_text_149]").val(res.PHONE);
 
-                   }
-                   if(res.TYPE_ID == '414'){
-                       $("#modal_order_service_form_pay input[name=form_text_50]").val(res.NAME);
-                       $("#modal_order_service_form_pay textarea[name=form_textarea_56]").val(res.ADRESS);
-                       $("#modal_order_service_form_pay input[name=form_text_51]").val(res.PHONE);
+                    }
+                    if(res.TYPE_ID == '414'){
+                        $("#modal_order_service_form_pay input[name=form_text_50]").val(res.NAME);
+                        $("#modal_order_service_form_pay textarea[name=form_textarea_56]").val(res.ADRESS);
+                        $("#modal_order_service_form_pay input[name=form_text_51]").val(res.PHONE);
 
-                   }
-                   console.log(res);
-           });
+                    }
+                    //console.log(res);
+                });
         }
 
         function setpayment(pay){
             let type_pay =  $('#form_dropdown_pay');
+            let type_pay_comm = $('#type_pay_comm');
             let option_pay_bank = $("#form_dropdown_pay option[value='61']");
             let option_pay_cache = $("#form_dropdown_pay option[value='59']");
-            type_pay.attr('disabled','disabled');
+            //type_pay.attr('disabled','disabled');
             if(pay.value === 'sender_pay' || pay.value === 'recipient_pay'){
                 option_pay_cache.attr("selected", "selected");
                 option_pay_bank.removeAttr('selected');
+                type_pay_comm.text('НАЛИЧНЫМИ');
 
             }
 
             if(pay.value === 'creator_pay'){
                 option_pay_cache.removeAttr('selected');
                 option_pay_bank.attr("selected", "selected");
-
+                type_pay_comm.text('БАНКОВСКОЙ КАРТОЙ');
 
             }
 
